@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "210118962564",
+    "project_id": "etumed-bussiness",
+    "storage_bucket": "etumed-bussiness.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210118962564:android:5752393e23c34a28cd81d1",
+        "android_client_info": {
+          "package_name": "io.github.etumedbussiness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "210118962564-5e6818u5t4pk666qh9d6rvr94mkhl21s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNHWxnrobHPqw43XQNZJJp2hDDm_IPWnY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "210118962564-5e6818u5t4pk666qh9d6rvr94mkhl21s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
