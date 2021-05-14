@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "210118962564-f69pb7eemravriu47jha0984nbuvvdf6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.github.etumedbussiness",
+            "certificate_hash": "c9eb7ee77e863eb7660a347fb14df25a40606954"
+          }
+        },
+        {
           "client_id": "210118962564-5e6818u5t4pk666qh9d6rvr94mkhl21s.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "210118962564-5e6818u5t4pk666qh9d6rvr94mkhl21s.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "210118962564-s5fihvn6g3qp3b4dond4b0vldk9ka401.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.github.etumedbussiness"
+              }
             }
           ]
         }
