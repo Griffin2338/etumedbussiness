@@ -1,3 +1,4 @@
+import 'package:etumedbussiness/posts.dart';
 import 'package:etumedbussiness/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,10 +45,10 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Padding(
                   padding: EdgeInsets.all(0),
-                  child: ProfilePage(),
+                  child: PostsPage(),
                 ),
-                Center(child: Text("page2")),
-                Center(child: Text("page3")),
+                Center(child: Text("Search page...")),
+                ProfilePage(),
               ],
             ),
           ),
