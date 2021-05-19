@@ -209,7 +209,7 @@ class _PostsPageState extends State<PostsPage> {
                         TaskWidget(
                           title: "Get started!",
                           description:
-                              "Hello user! Welcome to todo app, this is default task that you can edit or delete to start using the app.",
+                              "Hello user! Welcome to etumed bussines app, this is default task.",
                         ),
                       ],
                     ),

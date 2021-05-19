@@ -1,5 +1,6 @@
 import 'package:etumedbussiness/posts.dart';
 import 'package:etumedbussiness/profile.dart';
+import 'package:etumedbussiness/search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -47,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.all(0),
                   child: PostsPage(),
                 ),
-                Center(child: Text("Search page...")),
+                SearchBar(),
                 ProfilePage(),
               ],
             ),
