@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:etumedbussiness/widgets/custombody.dart';
 
 class SignIn extends StatefulWidget {
@@ -8,7 +7,7 @@ class SignIn extends StatefulWidget {
 }
 
 class SignInState extends State<SignIn> {
-  String _contactText = '';
+  //String _contactText = '';
 
   @override
   void initState() {
@@ -24,15 +23,15 @@ class SignInState extends State<SignIn> {
         child: Center(
           child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                       color: Colors.black26,
                       offset: Offset(0, 1),
-                      blurRadius: 2.0)
+                      blurRadius: 2)
                 ],
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(12),
                 color: Colors.grey[800],
               ),
               child: Column(
@@ -41,9 +40,9 @@ class SignInState extends State<SignIn> {
                     padding: const EdgeInsets.only(top: 16, bottom: 16),
                     child: Center(
                       child: Container(
-                        height: 120.0,
-                        width: 120.0,
-                        decoration: BoxDecoration(
+                        height: 120,
+                        width: 120,
+                        decoration: const BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage('assets/etu_med_logo.png'),
                             fit: BoxFit.fill,
@@ -53,7 +52,7 @@ class SignInState extends State<SignIn> {
                       ),
                     ),
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: TextField(
                       decoration: InputDecoration(
@@ -63,9 +62,8 @@ class SignInState extends State<SignIn> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 15.0, right: 15.0, top: 15, bottom: 0),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15, top: 15),
                     child: TextField(
                       obscureText: true,
                       decoration: InputDecoration(
@@ -76,11 +74,11 @@ class SignInState extends State<SignIn> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 16),
+                    margin: const EdgeInsets.symmetric(vertical: 16),
                     child: TextButton(
                       onPressed: () {},
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
                           'Forgot Password',
                           style: TextStyle(
@@ -94,10 +92,10 @@ class SignInState extends State<SignIn> {
                       //print("click");
                     },
                     child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 20),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
+                        borderRadius: const BorderRadius.all(
                           Radius.circular(20),
                         ),
                         boxShadow: [
@@ -106,13 +104,12 @@ class SignInState extends State<SignIn> {
                                 Theme.of(context).accentColor.withOpacity(0.5),
                             spreadRadius: 3,
                             blurRadius: 5,
-                            offset: Offset(0, 0),
                           ),
                         ],
                         color: Theme.of(context).accentColor,
                       ),
-                      child: Text(
-                        "Login",
+                      child: const Text(
+                        'Login',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -121,14 +118,14 @@ class SignInState extends State<SignIn> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 32),
+                  const SizedBox(height: 32),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, "/signup");
+                      Navigator.pushNamed(context, '/signup');
                     },
-                    child: Text('New User? Create Account'),
+                    child: const Text('New User? Create Account'),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),

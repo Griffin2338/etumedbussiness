@@ -10,13 +10,13 @@ class BaseBodyLayout extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         image: DecorationImage(
-          colorFilter: new ColorFilter.mode(
+          colorFilter: ColorFilter.mode(
               Colors.black.withOpacity(0.2), BlendMode.dstATop),
-          image: AssetImage(this.asset),
+          image: AssetImage(asset),
           fit: BoxFit.cover,
         ),
       ),
-      child: Padding(padding: EdgeInsets.all(8), child: this.child),
+      child: Padding(padding: const EdgeInsets.all(8), child: child),
     );
   }
 }

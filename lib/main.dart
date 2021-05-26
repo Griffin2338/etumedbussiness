@@ -9,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-
 // Requires that the Firebase Auth emulator is running locally
 // e.g via `melos run firebase:emulator`.
 Future<void> main() async {
@@ -32,9 +31,10 @@ class AuthExampleApp extends StatelessWidget {
         body: SignIn(),
       ),
       routes: {
-        "/signin": (_) => SignIn(),
-        "/signup": (_) => SignUp(),
-     },
+//        "/homepage": (_) => HomePage(),
+        '/signin': (_) => SignIn(),
+        '/signup': (_) => SignUp(),
+      },
     );
   }
 }

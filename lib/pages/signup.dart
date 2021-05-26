@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:etumedbussiness/firebase/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:etumedbussiness/widgets/custombody.dart';
 
@@ -8,12 +8,34 @@ class SignUp extends StatefulWidget {
 }
 
 class SignUpState extends State<SignUp> {
-  String _contactText = '';
+  //String _contactText = '';
+  late TextEditingController fnamectrl;
+  late TextEditingController lnamectrl;
+  late TextEditingController emailctrl;
+  late TextEditingController passctrl;
+  late TextEditingController pass2ctrl;
 
   @override
   void initState() {
     super.initState();
+    fnamectrl = TextEditingController();
+    lnamectrl = TextEditingController();
+    emailctrl = TextEditingController();
+    passctrl = TextEditingController();
+    pass2ctrl = TextEditingController();
   }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    fnamectrl.dispose();
+    lnamectrl.dispose();
+    emailctrl.dispose();
+    passctrl.dispose();
+    pass2ctrl.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +46,15 @@ class SignUpState extends State<SignUp> {
         child: Center(
           child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                       color: Colors.black26,
                       offset: Offset(0, 1),
-                      blurRadius: 2.0)
+                      blurRadius: 2)
                 ],
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(12),
                 color: Colors.grey[800],
               ),
               child: Column(
@@ -41,9 +63,9 @@ class SignUpState extends State<SignUp> {
                     padding: const EdgeInsets.only(top: 16, bottom: 20),
                     child: Center(
                       child: Container(
-                        height: 120.0,
-                        width: 120.0,
-                        decoration: BoxDecoration(
+                        height: 120,
+                        width: 120,
+                        decoration: const BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage('assets/etu_med_logo.png'),
                             fit: BoxFit.fill,
@@ -54,21 +76,21 @@ class SignUpState extends State<SignUp> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                        right: 15.0, left: 15.0, top: 15, bottom: 0),
+                    padding: const EdgeInsets.only(right: 15, left: 15, top: 15),
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: fnamectrl,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Name',
-                        hintText: 'Please give your name',
+                        hintText: 'Please give your first name',
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                        right: 15.0, left: 15.0, top: 15, bottom: 0),
+                    padding: const EdgeInsets.only(right: 15, left: 15, top: 15),
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: lnamectrl,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Surname',
                         hintText: 'Please give your surname.',
@@ -76,10 +98,10 @@ class SignUpState extends State<SignUp> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                        right: 15.0, left: 15.0, top: 15, bottom: 0),
+                    padding: const EdgeInsets.only(right: 15, left: 15, top: 15),
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: emailctrl,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Email',
                         hintText: 'Enter valid email id as abc@gmail.com',
@@ -87,11 +109,11 @@ class SignUpState extends State<SignUp> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                        left: 15.0, right: 15.0, top: 15, bottom: 0),
+                    padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
                     child: TextField(
                       obscureText: true,
-                      decoration: InputDecoration(
+                      controller: passctrl,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Password',
                         hintText: 'Enter secure password',
@@ -100,55 +122,26 @@ class SignUpState extends State<SignUp> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 15.0, right: 15.0, top: 15.0, bottom: 20),
+                        left: 15, right: 15, top: 15, bottom: 20),
                     child: TextField(
                       obscureText: true,
-                      decoration: InputDecoration(
+                      controller: pass2ctrl,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Again Password',
                         hintText: 'Enter secure password',
                       ),
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      //print("click");
-                    },
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color:
-                                Theme.of(context).accentColor.withOpacity(0.5),
-                            spreadRadius: 3,
-                            blurRadius: 5,
-                            offset: Offset(0, 0),
-                          ),
-                        ],
-                        color: Theme.of(context).accentColor,
-                      ),
-                      child: Text(
-                        "SignUp",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 32),
+                  AddUser(fnamectrl.text, lnamectrl.text, emailctrl.text,
+                      passctrl.text),
+                  const SizedBox(height: 32),
                   GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, "/signin");
+                        Navigator.pushNamed(context, '/signin');
                       },
-                      child: Text("Already have account? Sign in")),
-                  SizedBox(height: 16),
+                      child: const Text('Already have account? Sign in')),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
