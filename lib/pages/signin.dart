@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:etumedbussiness/elements/user.dart';
+import 'package:etumedbussiness/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:etumedbussiness/widgets/custombody.dart';
 
@@ -9,9 +12,46 @@ class SignIn extends StatefulWidget {
 class SignInState extends State<SignIn> {
   //String _contactText = '';
 
+  TextEditingController emailctrl = TextEditingController();
+  TextEditingController passctrl = TextEditingController();
+
+  final usersRef = FirebaseFirestore.instance.collection('users').withConverter(
+        fromFirestore: (snapshot, _) => EtuPerson.fromJson(snapshot.data()!),
+        toFirestore: (user, _) => user.toJson(),
+      );
+
   @override
   void initState() {
     super.initState();
+  }
+
+  void disponse() {
+    passctrl.dispose();
+    emailctrl.dispose();
+    super.dispose();
+  }
+
+  void showAlert(BuildContext context, TextEditingController email,
+      TextEditingController passwd) async {
+    //Put your code here which you want to execute on Yes button click.
+    try {
+      List<QueryDocumentSnapshot<EtuPerson?>> currentusers = await usersRef
+          .where('email', isEqualTo: email.text)
+          .get()
+          .then((snapshot) => snapshot.docs);
+      if (currentusers.isNotEmpty) {
+        if (currentusers[0].get('password').toString().compareTo(passwd.text) == 0  &&
+          currentusers[0].get('email').toString().compareTo(email.text) == 0) {
+          print("Succesfully complated...");
+        } else {
+          showToast(context, 'Your password is not true, Check it...');
+        }
+      } else {
+        showToast(context, 'There is no user with email "${email.text}"');
+      }
+    } catch (e) {
+      showToast(context, 'Sign in Failed. Check your connection');
+    }
   }
 
   @override
@@ -52,21 +92,24 @@ class SignInState extends State<SignIn> {
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: emailctrl,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Email',
                         hintText: 'Enter valid email id as abc@gmail.com',
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15, top: 15),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 15, right: 15, top: 15),
                     child: TextField(
                       obscureText: true,
-                      decoration: InputDecoration(
+                      controller: passctrl,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Password',
                         hintText: 'Enter secure password',
@@ -89,7 +132,7 @@ class SignInState extends State<SignIn> {
                   ),
                   InkWell(
                     onTap: () {
-                      //print("click");
+                      showAlert(context, emailctrl, passctrl);
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(

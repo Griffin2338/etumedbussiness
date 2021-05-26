@@ -1,4 +1,5 @@
-import 'package:etumedbussiness/firebase/firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:etumedbussiness/elements/user.dart';
 import 'package:etumedbussiness/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:etumedbussiness/widgets/custombody.dart';
@@ -14,7 +15,11 @@ class SignUpState extends State<SignUp> {
   TextEditingController emailctrl = TextEditingController();
   TextEditingController passctrl = TextEditingController();
   TextEditingController pass2ctrl = TextEditingController();
-
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  final usersRef = FirebaseFirestore.instance.collection('users').withConverter(
+        fromFirestore: (snapshot, _) => EtuPerson.fromJson(snapshot.data()!),
+        toFirestore: (user, _) => user.toJson(),
+      );
   @override
   void initState() {
     super.initState();
@@ -32,51 +37,65 @@ class SignUpState extends State<SignUp> {
   }
 
   void showAlert(
-      BuildContext context,
-      TextEditingController fname,
-      TextEditingController lname,
-      TextEditingController email,
-      TextEditingController passwd) => showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Sign Up Confirmation'),
-          content: Text('Are You Sure Want To Proceed ?'),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('YES'),
-              onPressed: () async {
-                //Put your code here which you want to execute on Yes button click.
-                bool result = await AddUser(
-                        fname.text, lname.text, email.text, passwd.text)
-                    .addUser(context);
-                if (result == true) {
+          BuildContext context,
+          TextEditingController fname,
+          TextEditingController lname,
+          TextEditingController email,
+          TextEditingController passwd) =>
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Sign Up Confirmation'),
+            content: const Text('Are You Sure Want To Proceed ?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () async {
+                  //Put your code here which you want to execute on Yes button click.
+                  try {
+                    List<QueryDocumentSnapshot<EtuPerson?>> currentusers =
+                        await usersRef
+                            .where('email', isEqualTo: email.text)
+                            .get()
+                            .then((snapshot) => snapshot.docs);
+                    if (currentusers.isNotEmpty) {
+                      Navigator.of(context).pop();
+                      showToast(context,
+                          'User email "$email.text" already taken. There is an account. So, please check your email or forgot password insted of sign up.');
+                    } else {
+                      await users.add({
+                        'first_name': fname.text, // John Doe
+                        'last_name': lname.text, // Stokes and Sons
+                        'email': email.text,
+                        'password': passwd.text,
+                        'department': 'Not given',
+                        'graduation_date': 'Not given',
+                        'is_admin': false
+                      });
+
+                      Navigator.of(context).pop();
+                      showToast(context,
+                          'User Created Successfully. You can go to sign in and sign using credentials');
+                    }
+                  } catch (e) {
+                    Navigator.of(context).pop();
+                    showToast(
+                        context, 'User Creation Failed. Check your connection');
+                  }
+                },
+                child: const Text('YES'),
+              ),
+              TextButton(
+                onPressed: () {
+                  //Put your code here which you want to execute on No button click.
                   Navigator.of(context).pop();
-                  showToast(context, 'User Created Successfully. You can go to sign in and sign using credentials');
-                } else {
-                  Navigator.of(context).pop();
-                  showToast(context, 'User Creation Failed. Check given credentials');
-                }
-              },
-            ),
-            FlatButton(
-              child: Text('NO'),
-              onPressed: () {
-                //Put your code here which you want to execute on No button click.
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-              child: Text('CANCEL'),
-              onPressed: () {
-                //Put your code here which you want to execute on Cancel button click.
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+                },
+                child: const Text('NO'),
+              ),
+            ],
+          );
+        },
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -180,8 +199,19 @@ class SignUpState extends State<SignUp> {
                   ),
                   InkWell(
                     onTap: () {
-                      showAlert(
-                          context, fnamectrl, lnamectrl, emailctrl, passctrl);
+                      if (pass2ctrl.text == passctrl.text) {
+                        if (RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(emailctrl.text)) {
+                          showAlert(context, fnamectrl, lnamectrl, emailctrl,
+                              passctrl);
+                        } else {
+                          showToast(context,
+                              'Email is not valid. Give it as  "abcd@example.com" format.');
+                        }
+                      } else {
+                        showToast(context, 'Passwords not matching.');
+                      }
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
