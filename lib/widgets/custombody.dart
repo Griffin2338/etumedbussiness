@@ -7,7 +7,7 @@ class BaseBodyLayout extends StatelessWidget {
   BaseBodyLayout({required this.child, required this.asset});
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         image: DecorationImage(
           colorFilter: new ColorFilter.mode(
