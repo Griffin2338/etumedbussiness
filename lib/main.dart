@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:etumedbussiness/homepage.dart';
+//import 'package:etumedbussiness/homepage.dart';
+import 'package:etumedbussiness/pages/signup.dart';
+import 'package:etumedbussiness/pages/signin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-//import './register_page.dart';
-import './signin_page.dart';
 
 // Requires that the Firebase Auth emulator is running locally
 // e.g via `melos run firebase:emulator`.
@@ -32,8 +32,9 @@ class AuthExampleApp extends StatelessWidget {
         body: SignIn(),
       ),
       routes: {
-        "/main": (_) => HomePage(),
-      },
+        "/signin": (_) => SignIn(),
+        "/signup": (_) => SignUp(),
+     },
     );
   }
 }

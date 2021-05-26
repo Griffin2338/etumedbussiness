@@ -20,6 +20,7 @@ dependencies:
   cloud_firestore: ^2.1.0
   firebase_messaging: ^9.1.4
   google_fonts: ^2.1.0
+  flutter_local_notifications: ^5.0.0+4
 
 dev_dependencies:
   flutter_test:
@@ -34,4 +35,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - 1.jpg
+    - etu_med_logo.png
+    - pattern.jpg
