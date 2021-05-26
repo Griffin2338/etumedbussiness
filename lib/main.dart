@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 //import 'package:etumedbussiness/homepage.dart';
+import 'package:etumedbussiness/pages/homepage.dart';
 import 'package:etumedbussiness/pages/signup.dart';
 import 'package:etumedbussiness/pages/signin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,6 +35,7 @@ class AuthExampleApp extends StatelessWidget {
 //        "/homepage": (_) => HomePage(),
         '/signin': (_) => SignIn(),
         '/signup': (_) => SignUp(),
+        '/main': (_) => HomePage(),
       },
     );
   }

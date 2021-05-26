@@ -40,9 +40,11 @@ class SignInState extends State<SignIn> {
           .get()
           .then((snapshot) => snapshot.docs);
       if (currentusers.isNotEmpty) {
-        if (currentusers[0].get('password').toString().compareTo(passwd.text) == 0  &&
-          currentusers[0].get('email').toString().compareTo(email.text) == 0) {
-          print("Succesfully complated...");
+        if (currentusers[0].get('password').toString().compareTo(passwd.text) ==
+                0 &&
+            currentusers[0].get('email').toString().compareTo(email.text) ==
+                0) {
+            await Navigator.pushReplacementNamed(context, '/main');
         } else {
           showToast(context, 'Your password is not true, Check it...');
         }
