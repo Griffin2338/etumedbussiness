@@ -1,4 +1,5 @@
 import 'package:etumedbussiness/firebase/firestore.dart';
+import 'package:etumedbussiness/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:etumedbussiness/widgets/custombody.dart';
 
@@ -8,21 +9,15 @@ class SignUp extends StatefulWidget {
 }
 
 class SignUpState extends State<SignUp> {
-  //String _contactText = '';
-  late TextEditingController fnamectrl;
-  late TextEditingController lnamectrl;
-  late TextEditingController emailctrl;
-  late TextEditingController passctrl;
-  late TextEditingController pass2ctrl;
+  TextEditingController fnamectrl = TextEditingController();
+  TextEditingController lnamectrl = TextEditingController();
+  TextEditingController emailctrl = TextEditingController();
+  TextEditingController passctrl = TextEditingController();
+  TextEditingController pass2ctrl = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    fnamectrl = TextEditingController();
-    lnamectrl = TextEditingController();
-    emailctrl = TextEditingController();
-    passctrl = TextEditingController();
-    pass2ctrl = TextEditingController();
   }
 
   @override
@@ -36,6 +31,52 @@ class SignUpState extends State<SignUp> {
     super.dispose();
   }
 
+  void showAlert(
+      BuildContext context,
+      TextEditingController fname,
+      TextEditingController lname,
+      TextEditingController email,
+      TextEditingController passwd) => showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Sign Up Confirmation'),
+          content: Text('Are You Sure Want To Proceed ?'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('YES'),
+              onPressed: () async {
+                //Put your code here which you want to execute on Yes button click.
+                bool result = await AddUser(
+                        fname.text, lname.text, email.text, passwd.text)
+                    .addUser(context);
+                if (result == true) {
+                  Navigator.of(context).pop();
+                  showToast(context, 'User Created Successfully. You can go to sign in and sign using credentials');
+                } else {
+                  Navigator.of(context).pop();
+                  showToast(context, 'User Creation Failed. Check given credentials');
+                }
+              },
+            ),
+            FlatButton(
+              child: Text('NO'),
+              onPressed: () {
+                //Put your code here which you want to execute on No button click.
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('CANCEL'),
+              onPressed: () {
+                //Put your code here which you want to execute on Cancel button click.
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +117,8 @@ class SignUpState extends State<SignUp> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 15, left: 15, top: 15),
+                    padding:
+                        const EdgeInsets.only(right: 15, left: 15, top: 15),
                     child: TextField(
                       controller: fnamectrl,
                       decoration: const InputDecoration(
@@ -87,7 +129,8 @@ class SignUpState extends State<SignUp> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 15, left: 15, top: 15),
+                    padding:
+                        const EdgeInsets.only(right: 15, left: 15, top: 15),
                     child: TextField(
                       controller: lnamectrl,
                       decoration: const InputDecoration(
@@ -98,7 +141,8 @@ class SignUpState extends State<SignUp> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 15, left: 15, top: 15),
+                    padding:
+                        const EdgeInsets.only(right: 15, left: 15, top: 15),
                     child: TextField(
                       controller: emailctrl,
                       decoration: const InputDecoration(
@@ -109,7 +153,8 @@ class SignUpState extends State<SignUp> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+                    padding:
+                        const EdgeInsets.only(left: 15, right: 15, top: 15),
                     child: TextField(
                       obscureText: true,
                       controller: passctrl,
@@ -133,8 +178,38 @@ class SignUpState extends State<SignUp> {
                       ),
                     ),
                   ),
-                  AddUser(fnamectrl.text, lnamectrl.text, emailctrl.text,
-                      passctrl.text),
+                  InkWell(
+                    onTap: () {
+                      showAlert(
+                          context, fnamectrl, lnamectrl, emailctrl, passctrl);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color:
+                                Theme.of(context).accentColor.withOpacity(0.5),
+                            spreadRadius: 3,
+                            blurRadius: 5,
+                          ),
+                        ],
+                        color: Theme.of(context).accentColor,
+                      ),
+                      child: const Text(
+                        'Sign up',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 32),
                   GestureDetector(
                       onTap: () {
