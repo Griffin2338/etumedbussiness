@@ -3,6 +3,7 @@ import 'package:etumedbussiness/elements/user.dart';
 import 'package:etumedbussiness/widgets/toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:etumedbussiness/widgets/custombody.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -15,14 +16,23 @@ class SignInState extends State<SignIn> {
   TextEditingController emailctrl = TextEditingController();
   TextEditingController passctrl = TextEditingController();
 
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+
   final usersRef = FirebaseFirestore.instance.collection('users').withConverter(
         fromFirestore: (snapshot, _) => EtuPerson.fromJson(snapshot.data()!),
         toFirestore: (user, _) => user.toJson(),
       );
 
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   @override
   void initState() {
     super.initState();
+    _changeUserID('');
+  }
+
+  Future<void> _changeUserID(String userID) async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setString('userID', userID);
   }
 
   void disponse() {
@@ -31,6 +41,7 @@ class SignInState extends State<SignIn> {
     super.dispose();
   }
 
+  // ignore: avoid_void_async
   void showAlert(BuildContext context, TextEditingController email,
       TextEditingController passwd) async {
     //Put your code here which you want to execute on Yes button click.
@@ -44,7 +55,8 @@ class SignInState extends State<SignIn> {
                 0 &&
             currentusers[0].get('email').toString().compareTo(email.text) ==
                 0) {
-            await Navigator.pushReplacementNamed(context, '/main');
+          await _changeUserID(currentusers[0].id);
+          await Navigator.pushReplacementNamed(context, '/main');
         } else {
           showToast(context, 'Your password is not true, Check it...');
         }

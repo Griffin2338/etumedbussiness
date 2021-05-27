@@ -61,7 +61,7 @@ class SignUpState extends State<SignUp> {
                     if (currentusers.isNotEmpty) {
                       Navigator.of(context).pop();
                       showToast(context,
-                          'User email "$email.text" already taken. There is an account. So, please check your email or forgot password insted of sign up.');
+                          'User email "${email.text}" already taken. There is an account. So, please check your email or forgot password insted of sign up.');
                     } else {
                       await users.add({
                         'first_name': fname.text, // John Doe
@@ -70,7 +70,7 @@ class SignUpState extends State<SignUp> {
                         'password': passwd.text,
                         'department': 'Not given',
                         'graduation_date': 'Not given',
-                        'is_admin': false
+                        'is_admin': false,
                       });
 
                       Navigator.of(context).pop();

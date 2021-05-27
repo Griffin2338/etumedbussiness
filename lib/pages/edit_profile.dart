@@ -10,12 +10,6 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  void _pushPage(BuildContext context, Widget page) {
-    Navigator.of(context) /*!*/ .push(
-      MaterialPageRoute<void>(builder: (_) => page),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,8 +90,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ],
                         )),
                     Padding(
-                        padding:
-                            EdgeInsets.only(left: 25, right: 25, top: 25),
+                        padding: EdgeInsets.only(left: 25, right: 25, top: 25),
                         child: Row(
                           children: <Widget>[
                             Column(
@@ -191,7 +184,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             Flexible(
                               child: TextField(
                                 controller: TextEditingController(
-                                    text: 'Software Developer at SuperGame LLC.'),
+                                    text:
+                                        'Software Developer at SuperGame LLC.'),
                                 decoration: const InputDecoration(
                                   hintText: 'Your Name',
                                 ),
@@ -201,8 +195,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ],
                         )),
                     Padding(
-                        padding:
-                            EdgeInsets.only(left: 25, right: 25, top: 25),
+                        padding: EdgeInsets.only(left: 25, right: 25, top: 25),
                         child: Row(
                           children: <Widget>[
                             Column(
@@ -220,7 +213,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         )),
                     Padding(
                         padding:
-                        const EdgeInsets.only(left: 25, right: 25, top: 2),
+                            const EdgeInsets.only(left: 25, right: 25, top: 2),
                         child: Row(
                           children: <Widget>[
                             Flexible(
@@ -237,7 +230,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         )),
                     Padding(
                         padding:
-                        const EdgeInsets.only(left: 25, right: 25, top: 25),
+                            const EdgeInsets.only(left: 25, right: 25, top: 25),
                         child: Row(
                           children: <Widget>[
                             Column(
@@ -255,13 +248,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         )),
                     Padding(
                         padding:
-                        const EdgeInsets.only(left: 25, right: 25, top: 2),
+                            const EdgeInsets.only(left: 25, right: 25, top: 2),
                         child: Row(
                           children: <Widget>[
                             Flexible(
                               child: TextField(
-                                controller: TextEditingController(
-                                    text: 'Softwares'),
+                                controller:
+                                    TextEditingController(text: 'Softwares'),
                                 decoration: const InputDecoration(
                                   hintText: 'Your Name',
                                 ),
@@ -272,7 +265,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         )),
                     Padding(
                         padding:
-                        const EdgeInsets.only(left: 25, right: 25, top: 25),
+                            const EdgeInsets.only(left: 25, right: 25, top: 25),
                         child: Row(
                           children: <Widget>[
                             Column(
@@ -290,7 +283,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         )),
                     Padding(
                         padding:
-                        const EdgeInsets.only(left: 25, right: 25, top: 2),
+                            const EdgeInsets.only(left: 25, right: 25, top: 2),
                         child: Row(
                           children: <Widget>[
                             Flexible(
@@ -306,23 +299,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ],
                         )),
                     Padding(
-                        padding:
-                        EdgeInsets.only(left: 25, right: 25, top: 25),
+                        padding: EdgeInsets.only(left: 25, right: 25, top: 25),
                         child: Row(
                           children: <Widget>[
                             Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 RaisedButton(
-                                  onPressed: (){
-
-                                  },
-                                  shape:  RoundedRectangleBorder(
+                                  onPressed: () {},
+                                  shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(80),
                                   ),
                                   child: Ink(
                                     child: Container(
-                                      constraints: const BoxConstraints(maxWidth: 100,maxHeight: 40,),
+                                      constraints: const BoxConstraints(
+                                        maxWidth: 100,
+                                        maxHeight: 40,
+                                      ),
                                       alignment: Alignment.center,
                                       child: Text(
                                         'Save Changes',
@@ -330,8 +323,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                             color: Colors.white,
                                             fontSize: 12,
                                             letterSpacing: 2,
-                                            fontWeight: FontWeight.w300
-                                        ),
+                                            fontWeight: FontWeight.w300),
                                       ),
                                     ),
                                   ),

@@ -21,6 +21,7 @@ dependencies:
   firebase_messaging: ^9.1.4
   google_fonts: ^2.1.0
   flutter_local_notifications: ^5.0.0+4
+  shared_preferences: ^2.0.6
 
 dev_dependencies:
   flutter_test:
@@ -37,3 +38,4 @@ flutter:
   assets:
     - etu_med_logo.png
     - pattern.jpg
+    - def_avatar.jpg

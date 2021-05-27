@@ -61,17 +61,21 @@ class TodoWidget extends StatelessWidget {
                 width: 20,
                 height: 20,
                 decoration: BoxDecoration(
-                    color: isdone ? const Color(0xff7349fe) : Colors.transparent,
+                    color:
+                        isdone ? const Color(0xff7349fe) : Colors.transparent,
                     borderRadius: BorderRadius.circular(6),
                     border: isdone
                         ? null
-                        : Border.all(color: const Color(0xff86829d), width: 1.5)),
+                        : Border.all(
+                            color: const Color(0xff86829d), width: 1.5)),
                 child: const Icon(Icons.check_circle),
               ),
               Text(
                 title,
                 style: TextStyle(
-                    color: isdone ? const Color(0xff211551) : const Color(0xff86829d)),
+                    color: isdone
+                        ? const Color(0xff211551)
+                        : const Color(0xff86829d)),
               )
             ],
           ),
@@ -106,7 +110,7 @@ class _TaskPageState extends State<TaskPage> {
                             Navigator.pop(context);
                           },
                           child: const Padding(
-                            padding:  EdgeInsets.all(24),
+                            padding: EdgeInsets.all(24),
                             child: Icon(Icons.arrow_back),
                           ),
                         ),
@@ -197,7 +201,7 @@ class _PostsPageState extends State<PostsPage> {
           padding: EdgeInsets.symmetric(
             horizontal: 24,
           ),
-          color: Color(0XFFF6F6F6),
+          color: Color(0xfff6f6f6),
           child: Stack(
             children: [
               Column(

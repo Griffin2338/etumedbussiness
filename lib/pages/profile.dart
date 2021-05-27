@@ -40,6 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 image: DecorationImage(
                     image: NetworkImage('https://i.ibb.co/1RBt4sf/bg.jpg'),
                     fit: BoxFit.cover)),
+            // ignore: sized_box_for_whitespace
             child: Container(
               width: double.infinity,
               height: 200,
@@ -98,7 +99,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                    child:  Column(
+                    child: Column(
+                      // ignore: prefer_const_literals_to_create_immutables
                       children: <Widget>[
                         const Text(
                           'Project',
@@ -122,6 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Expanded(
                     child: Column(
+                      // ignore: prefer_const_literals_to_create_immutables
                       children: <Widget>[
                         const Text(
                           'Followers',
