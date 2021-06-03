@@ -20,6 +20,9 @@ class EditProfileViewModel extends ChangeNotifier {
   String username;
   String email;
   String bio;
+  String location;
+  String occupation;
+  String department;
   File image;
   String imgLink;
 
@@ -38,6 +41,24 @@ class EditProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  setLocation(String val) {
+    print('SetLocation $val');
+    location = val;
+    notifyListeners();
+  }
+
+  setOccupation(String val) {
+    print('SetOccupation $val');
+    occupation = val;
+    notifyListeners();
+  }
+
+  setDepartment(String val) {
+    print('setDepartment $val');
+    department = val;
+    notifyListeners();
+  }
+
   setBio(String val) {
     print('SetBio$val');
     bio = val;
@@ -45,12 +66,12 @@ class EditProfileViewModel extends ChangeNotifier {
   }
 
   setUsername(String val) {
-    print('SetUsername$val');
+    print('SetUsername $val');
     username = val;
     notifyListeners();
   }
   setemail(String val) {
-    print('SetEmail$val');
+    print('SetEmail $val');
     email = val;
     notifyListeners();
   }
@@ -67,12 +88,14 @@ class EditProfileViewModel extends ChangeNotifier {
         loading = true;
         notifyListeners();
         bool success = await userService.updateProfile(
-        //  user: user,
+          //  user: user,
           image: image,
           username: username,
-          bio: bio,
+          occupation: this.occupation,
           country: country,
           email: email,
+          location: location,
+          department: department,
         );
         print(success);
         if (success) {
