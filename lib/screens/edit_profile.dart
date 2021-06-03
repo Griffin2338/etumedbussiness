@@ -79,28 +79,28 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   child: viewModel.imgLink != null
                       ? Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: CircleAvatar(
-                            radius: 65.0,
-                            backgroundImage: NetworkImage(viewModel.imgLink),
-                          ),
-                        )
+                    padding: const EdgeInsets.all(1.0),
+                    child: CircleAvatar(
+                      radius: 65.0,
+                      backgroundImage: NetworkImage(viewModel.imgLink),
+                    ),
+                  )
                       : viewModel.image == null
-                          ? Padding(
-                              padding: const EdgeInsets.all(1.0),
-                              child: CircleAvatar(
-                                radius: 65.0,
-                                backgroundImage:
-                                    NetworkImage(widget.user.photoUrl),
-                              ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.all(1.0),
-                              child: CircleAvatar(
-                                radius: 65.0,
-                                backgroundImage: FileImage(viewModel.image),
-                              ),
-                            ),
+                      ? Padding(
+                    padding: const EdgeInsets.all(1.0),
+                    child: CircleAvatar(
+                      radius: 65.0,
+                      backgroundImage:
+                      NetworkImage(widget.user.photoUrl),
+                    ),
+                  )
+                      : Padding(
+                    padding: const EdgeInsets.all(1.0),
+                    child: CircleAvatar(
+                      radius: 65.0,
+                      backgroundImage: FileImage(viewModel.image),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -149,7 +149,7 @@ class _EditProfileState extends State<EditProfile> {
             TextFormBuilder(
               enabled: !viewModel.loading,
               initialValue: widget.user.email,
-              prefix: Feather.user,
+              prefix: Feather.mail,
               hintText: "E-mail",
               textInputAction: TextInputAction.next,
               validateFunction: Validations.validateEmail,
@@ -158,27 +158,41 @@ class _EditProfileState extends State<EditProfile> {
               },
             ),
             SizedBox(height: 10.0),
-            Text(
-              "Bio",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            TextFormField(
-              maxLines: null,
-              initialValue: widget.user.bio,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (String value) {
-                if (value.length > 1000) {
-                  return 'Bio must be short';
-                }
-                return null;
-              },
+            TextFormBuilder(
+              enabled: !viewModel.loading,
+              initialValue: widget.user.location,
+              prefix: Icons.location_on,
+              hintText: "Location",
+              validateFunction: Validations.validateLocation,
+              textInputAction: TextInputAction.next,
               onSaved: (String val) {
-                viewModel.setBio(val);
-              },
-              onChanged: (String val) {
-                viewModel.setBio(val);
+                viewModel.setLocation(val);
               },
             ),
+            SizedBox(height: 10.0),
+            TextFormBuilder(
+              enabled: !viewModel.loading,
+              initialValue: widget.user.occupation,
+              prefix: Icons.account_balance_wallet,
+              hintText: "Occupation",
+              validateFunction: Validations.validateOccupation,
+              textInputAction: TextInputAction.next,
+              onSaved: (String val) {
+                viewModel.setOccupation(val);
+              },
+            ),
+            SizedBox(height: 10.0),
+            TextFormBuilder(
+              enabled: !viewModel.loading,
+              initialValue: widget.user.department,
+              prefix: Feather.list,
+              hintText: "Department",
+              validateFunction: Validations.validateDepartment,
+              textInputAction: TextInputAction.next,
+              onSaved: (String val) {
+                viewModel.setDepartment(val);
+              },
+            )
           ],
         ),
       ),

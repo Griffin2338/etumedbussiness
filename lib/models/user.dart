@@ -7,20 +7,29 @@ class UserModel {
   String country;
   String bio;
   String id;
+  String location;
+  String occupation;
+  String department;
   Timestamp signedUpAt;
   Timestamp lastSeen;
   bool isOnline;
 
   UserModel(
-      {this.username,
-      this.email,
-      this.id,
-      this.photoUrl,
-      this.signedUpAt,
-      this.isOnline,
-      this.lastSeen,
-      this.bio,
-      this.country});
+      {
+        this.username,
+        this.email,
+        this.id,
+        this.photoUrl,
+        this.signedUpAt,
+        this.isOnline,
+        this.lastSeen,
+        this.bio,
+        this.country,
+        this.location,
+        this.occupation,
+        this.department,
+      }
+      );
 
   UserModel.fromJson(Map<String, dynamic> json) {
     username = json['username'];
@@ -30,8 +39,11 @@ class UserModel {
     signedUpAt = json['signedUpAt'];
     isOnline = json['isOnline'];
     lastSeen = json['lastSeen'];
+    location = json['location'];
     bio = json['bio'];
     id = json['id'];
+    occupation = json['occupation'];
+    department = json['department'];
   }
 
   Map<String, dynamic> toJson() {
@@ -45,6 +57,9 @@ class UserModel {
     data['isOnline'] = this.isOnline;
     data['lastSeen'] = this.lastSeen;
     data['id'] = this.id;
+    data['location'] = this.location;
+    data['occupation'] = this.occupation;
+    data['department'] = this.department;
 
     return data;
   }

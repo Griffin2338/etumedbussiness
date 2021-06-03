@@ -54,184 +54,121 @@ class _ProfileState extends State<Profile>  {
         actions: [
           widget.profileId == firebaseAuth.currentUser.uid
               ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 25.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        firebaseAuth.signOut();
-                        Navigator.of(context).push(
-                            CupertinoPageRoute(builder: (_) => Register()));
-                      },
-                      child: Text(
-                        'Log Out',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900, fontSize: 15.0),
-                      ),
-                    ),
-                  ),
-                )
+            child: Padding(
+              padding: const EdgeInsets.only(right: 25.0),
+              child: GestureDetector(
+                onTap: () {
+                  firebaseAuth.signOut();
+                  Navigator.of(context).push(
+                      CupertinoPageRoute(builder: (_) => Register()));
+                },
+                child: Text(
+                  'Log Out',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900, fontSize: 15.0),
+                ),
+              ),
+            ),
+          )
               : SizedBox()
         ],
       ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            automaticallyImplyLeading: false,
-            pinned: true,
-            floating: false,
-            toolbarHeight: 5.0,
-            collapsedHeight: 6.0,
-            expandedHeight: 220.0,
-            flexibleSpace: FlexibleSpaceBar(
-              background: StreamBuilder(
-                stream: usersRef.doc(widget.profileId).snapshots(),
-                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.hasData) {
-                    UserModel user = UserModel.fromJson(snapshot.data.data());
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(width: 15,height: 15,),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20.0),
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(user?.photoUrl),
-                                radius: 40.0,
-                              ),
+      body: StreamBuilder(
+        stream: usersRef.doc(widget.profileId).snapshots(),
+        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            UserModel user = UserModel.fromJson(snapshot.data.data());
+            return SafeArea(
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage('https://i.ibb.co/1RBt4sf/bg.jpg'),
+                              fit: BoxFit.cover)),
+                      // ignore: sized_box_for_whitespace
+                      child: Container(
+                        width: double.infinity,
+                        height: 200,
+                        child: Container(
+                          alignment: const Alignment(0, 2.5),
+                          child: CircleAvatar(
+                            backgroundImage:
+                            NetworkImage(user?.photoUrl),
+                            radius: 60,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 60,
+                    ),
+                    Text(
+                      user.username + ' ' + user.country,
+                      style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black54,
+                          letterSpacing: 2,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Table(
+                          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                          columnWidths: const <int, TableColumnWidth>{
+                            0: FixedColumnWidth(40),
+                            1: FixedColumnWidth(85),
+                            2: FlexColumnWidth(),
+                          },
+                          children: <TableRow>[
+                            TableRow(
+                              children: <Widget>[
+                                Icon(Icons.location_on, color: Colors.black26,),
+                                Text('Location:', style: TextStyle(fontWeight: FontWeight.bold),),
+                                Text(user.location ?? 'Not defined')
+                              ],
                             ),
-                            SizedBox(width: 20.0),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 32.0),
-                                Row(
-                                  children: [
-                                    Visibility(
-                                      visible: false,
-                                      child: SizedBox(width: 10.0),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          width: 130.0,
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: <TextSpan>[
-                                                TextSpan(text: user?.username, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w900)),
-                                                TextSpan(text: " ", style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w900,),),
-                                                TextSpan(text: user?.country, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w900,),),
-                                              ],
-                                            ),
-                                          )
-                                        ),
-                                        SizedBox(width: 10.0),
-                                        Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              user?.email,
-                                              style: TextStyle(
-                                                // color: Color(0xff4D4D4D),
-                                                fontSize: 15,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    widget.profileId == currentUserId()
-                                        ? InkWell(
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                CupertinoPageRoute(
-                                                  builder: (_) => Setting(),
-                                                ),
-                                              );
-                                            },
-
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                SizedBox(width: 100),
-                                                SizedBox(
-                                                  height:55,
-                                                  child: Icon(CupertinoIcons.settings,
-                                                      color: Theme.of(context)
-                                                          .accentColor,size: 55,),
-                                                ),
-                                                Text(
-                                                  'Settings',
-                                                  style:
-                                                      TextStyle(fontSize: 15),
-                                                )
-                                              ],
-                                            ),
-                                          )
-                                        : buildLikeButton()
-                                  ],
-                                ),
+                            TableRow(children: <Widget>[Text(''),Text(''),Text('')]),
+                            TableRow(
+                              children: <Widget>[
+                                Icon(Icons.account_balance_wallet, color: Colors.black26),
+                                Text('Occupation:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                Text(user.occupation ?? 'Not defined')
+                              ],
+                            ),
+                            TableRow(children: <Widget>[Text(''),Text(''),Text('')]),
+                            TableRow(
+                              children: <Widget>[
+                                Icon(Icons.category, color: Colors.black26),
+                                Text('Department:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                Text(user.department ?? 'Not defined')
+                              ],
+                            ),
+                            TableRow(children: <Widget>[Text(''),Text(''),Text('')]),
+                            TableRow(
+                              children: <Widget>[
+                                Icon(Icons.contact_mail, color: Colors.black26),
+                                Text('Contact:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                Text(user.email ?? 'Not defined')
                               ],
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0, left: 20.0),
-                          child: user.bio.isEmpty
-                              ? Container()
-                              : Container(
-                                  width: 200,
-                                  child: Text(
-                                    user?.bio,
-                                    style: TextStyle(
-                                      //    color: Color(0xff4D4D4D),
-                                      fontSize: 10.0,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    maxLines: null,
-                                  ),
-                                ),
-                        ),
-                        SizedBox(height: 10.0),
-                        Container(
-                          height: 50.0,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 30.0),
-
-                          ),
-                        ),
-                        buildProfileButton(user),
-                      ],
-                    );
-                  }
-                  return Container();
-                },
-              ),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                if (index > 0) return null;
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-
+                      ),
                     ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    buildProfileButton(user),
                   ],
-                );
-              },
-            ),
-          )
-        ],
+                ));
+          }
+          return Container();
+        },
       ),
     );
   }

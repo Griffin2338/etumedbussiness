@@ -20,13 +20,16 @@ class UserService extends Service {
   }
 
   updateProfile(
-      {File image, String username, String bio, String country, String email}) async {
+      {File image, String username, String bio, String country, String email, String location, String occupation, String department}) async {
     DocumentSnapshot doc = await usersRef.doc(currentUid()).get();
     var users = UserModel.fromJson(doc.data());
     users?.username = username;
     users?.bio = bio;
     users?.country = country;
     users?.email=email;
+    users?.location = location;
+    users?.occupation = occupation;
+    users?.department = department;
     if (image != null) {
       users?.photoUrl = await uploadImage(profilePic, image);
     }
@@ -36,6 +39,9 @@ class UserService extends Service {
       'country': country,
       'email': email,
       "photoUrl": users?.photoUrl ?? '',
+      'location': location,
+      'occupation': occupation,
+      'department': department,
     });
 
     return true;
