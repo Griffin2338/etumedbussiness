@@ -21,4 +21,28 @@ class Validations {
     return null;
   }
 
+  static String validateLocation(String value) {
+    if (value.isEmpty) return 'Location is Required.';
+    final RegExp nameExp = new RegExp(r'^[A-za-z0-9ğüşöçİĞÜŞÖÇ ,.]+$');
+    if (!nameExp.hasMatch(value))
+      return 'Please enter only alphabetical characters.';
+    return null;
+  }
+
+  static String validateOccupation(String value) {
+    if (value.isEmpty) return 'Occupation is Required.';
+    final RegExp nameExp = new RegExp(r'^[A-za-z0-9ğüşöçİĞÜŞÖÇ ,.]+$');
+    if (!nameExp.hasMatch(value))
+      return 'Please enter only alphabetical characters.';
+    return null;
+  }
+
+  static String validateDepartment(String value) {
+    if (value.isEmpty) return 'Department is Required.';
+    final RegExp nameExp = new RegExp(r'^[A-za-z0-9ğüşöçİĞÜŞÖÇ ,.]+$');
+    if (!nameExp.hasMatch(value))
+      return 'Please enter only alphabetical characters.';
+    return null;
+  }
+
 }
