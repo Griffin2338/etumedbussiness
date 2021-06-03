@@ -10,6 +10,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 
 
+
+
+
 class Landing extends StatefulWidget {
   Landing({Key key, this.title}) : super(key: key);
 
@@ -201,12 +204,9 @@ class _LandingState extends State<Landing> {
                 var profilePic = response.data["profilePicture"]["displayImage~"]["elements"][0]["identifiers"][0]["identifier"];
 
                 Map<String, dynamic> postJson = {
-                  "user_id": linkedInUser.userId,
                   "email": linkedInUser.email.elements[0].handleDeep.emailAddress,
                   "pic_url": profilePic,
                   "name": linkedInUser.firstName.localized.label + ' ' + linkedInUser.lastName.localized.label,
-                  "token": linkedInUser.token.accessToken,
-                  "expires_in": linkedInUser.token.expiresIn
                 };
                 setState(() {
                   resultslinkedin = postJson;
