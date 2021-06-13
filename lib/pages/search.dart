@@ -1,113 +1,287 @@
-import 'dart:core';
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:EtumedBusiness/models/user.dart';
+import 'package:EtumedBusiness/pages/profile.dart';
+import 'package:EtumedBusiness/utils/firebase.dart';
+import 'package:EtumedBusiness/widgets/indicators.dart';
 
-class ListWords {
-  late final String titlelist;
-  late final String definitionlist;
 
-  ListWords({required String titlelist, required String definitionlist}) {
-    this.titlelist = titlelist;
-    this.definitionlist = definitionlist;
-  }
+class Search extends StatefulWidget {
+  @override
+  _SearchState createState() => _SearchState();
 }
 
-List<ListWords> listWords = [
-  ListWords(titlelist: 'oneWord', definitionlist: 'OneWord definition'),
-  ListWords(titlelist: 'twoWord', definitionlist: 'TwoWord definition.'),
-  ListWords(titlelist: 'TreeWord', definitionlist: 'TreeWord definition'),
-];
+class _SearchState extends State<Search> {
+  User user;
+  TextEditingController searchController = TextEditingController();
+  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  List<DocumentSnapshot> users = [];
+  List<DocumentSnapshot> filteredUsers = [];
+  bool loading = true;
 
-class SearchBar extends StatelessWidget {
+  currentUserId() {
+    return firebaseAuth.currentUser.uid;
+  }
+
+  getUsers() async {
+    QuerySnapshot snap = await usersRef.get();
+    List<DocumentSnapshot> doc = snap.docs;
+    users = doc;
+    filteredUsers = doc;
+    setState(() {
+      loading = false;
+    });
+  }
+
+  search(String query) {
+    if (query == "") {
+      filteredUsers = users;
+    } else {
+      List userSearch = users.where((userSnap) {
+        Map user = userSnap.data();
+        String userName = user['username'];
+        return userName.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+
+      setState(() {
+        filteredUsers = userSearch;
+      });
+    }
+  }
+
+  searchLocation(String query) {
+    if (query == "") {
+      filteredUsers = users;
+    } else {
+      List userSearch = users.where((userSnap) {
+        Map user = userSnap.data();
+        try {
+          String userName = user['location'];
+          return userName.toLowerCase().contains(query.toLowerCase());
+        } catch (_) {
+          return false;
+        }
+      }).toList();
+
+      setState(() {
+        filteredUsers = userSearch;
+      });
+    }
+  }
+
+  searchDepartment(String query) {
+    if (query == "") {
+      filteredUsers = users;
+    } else {
+      List userSearch = users.where((userSnap) {
+        try {
+          Map user = userSnap.data();
+          String userName = user['department'];
+          return userName.toLowerCase().contains(query.toLowerCase());
+        } catch (_) {
+          return false;
+        }
+      }).toList();
+
+      setState(() {
+        filteredUsers = userSearch;
+      });
+    }
+  }
+
+  removeFromList(index) {
+    filteredUsers.removeAt(index);
+  }
+
+  @override
+  void initState() {
+    getUsers();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search from people'),
-        actions: <Widget>[
-          IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                showSearch(context: context, delegate: DataSearch(listWords));
-              })
-        ],
+        title: buildSearch(),
       ),
-      body: const Center(child: Text('default content')),
+      body: buildUsers(),
     );
   }
-}
+  String selectedKey;
 
-class DataSearch extends SearchDelegate<String> {
-  final List<ListWords> listWords;
+  String _selectedItem = 'Name';
+  List _options = ['Name', 'City', 'Department'];
 
-  DataSearch(this.listWords);
+  buildSearch() {
+    return Row(
 
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    //Actions for app bar
-    return [
-      IconButton(
-          icon: const Icon(Icons.clear),
-          onPressed: () {
-            query = '';
-          })
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    //leading icon on the left of the app bar
-    return IconButton(
-        icon: AnimatedIcon(
-          icon: AnimatedIcons.menu_arrow,
-          progress: transitionAnimation,
+      children: [
+        PopupMenuButton(
+          itemBuilder: (BuildContext bc) {
+            return _options
+                .map((day) => PopupMenuItem(
+              child: Text(day),
+              value: day,
+            ))
+                .toList();
+          },
+          onSelected: (value) {
+            setState(() {
+              _selectedItem = value;
+            });
+          },
         ),
-        onPressed: () {
-          //;
-        });
-  }
+        Container(
+          height: 35.0,
+          width: MediaQuery.of(context).size.width - 100,
+          decoration: BoxDecoration(
+            color: Colors.black26,
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: Center(
+              child: TextFormField(
+                controller: searchController,
+                textAlignVertical: TextAlignVertical.center,
+                maxLength: 10,
+                maxLengthEnforced: true,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(20),
+                ],
+                textCapitalization: TextCapitalization.sentences,
+                onChanged: (query) {
+                  if(_selectedItem=="Name"){
+                    search(query);
+                  }
+                  else if(_selectedItem=="Department"){
+                    searchDepartment(query);
+                  }
+                  else{
+                    searchLocation(query);
+                  }
+                },
+                decoration: InputDecoration(
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      searchController.clear();
+                    },
+                    child: Icon(Feather.x, size: 12.0, color: Colors.black),
+                  ),
+                  contentPadding: EdgeInsets.only(bottom: 10.0, left: 10.0),
+                  border: InputBorder.none,
+                  counterText: '',
+                  hintText: 'Search...',
+                  hintStyle: TextStyle(
+                    fontSize: 15.0,
+                  ),
+                ),
+              ),
+            ),
+          ),
 
-  @override
-  Widget buildResults(BuildContext context) {
-    // show some result based on the selection
-    final suggestionList = listWords;
-
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        title: Text(listWords[index].titlelist),
-        subtitle: Text(listWords[index].definitionlist),
-      ),
-      itemCount: suggestionList.length,
+        ),
+      ],
     );
   }
 
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    // show when someone searches for something
-
-    final suggestionList = query.isEmpty
-        ? listWords
-        : listWords
-            .where((p) =>
-                p.titlelist.contains(RegExp(query, caseSensitive: false)))
-            .toList();
-
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: () {},
-        trailing: const Icon(Icons.remove_red_eye),
-        title: RichText(
-          text: TextSpan(
-              text: suggestionList[index].titlelist.substring(0, query.length),
-              style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+  buildUsers() {
+    if (!loading) {
+      if (filteredUsers.isEmpty) {
+        return Center(
+          child: Text("No User Found",
+              style: TextStyle(fontWeight: FontWeight.bold)),
+        );
+      } else {
+        return ListView.builder(
+          itemCount: filteredUsers.length,
+          itemBuilder: (BuildContext context, int index) {
+            DocumentSnapshot doc = filteredUsers[index];
+            UserModel user = UserModel.fromJson(doc.data());
+            if (doc.id == currentUserId()) {
+              Timer(Duration(milliseconds: 500), () {
+                setState(() {
+                  removeFromList(index);
+                });
+              });
+            }
+            return Column(
               children: [
-                TextSpan(
-                    text:
-                        suggestionList[index].titlelist.substring(query.length),
-                    style: const TextStyle(color: Colors.grey)),
-              ]),
-        ),
+                ListTile(
+                  onTap: () => showProfile(context, profileId: user?.id),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 25.0),
+                  leading: CircleAvatar(
+                    radius: 35.0,
+                    backgroundImage: NetworkImage(user?.photoUrl),
+                  ),
+                  title: Text(user?.username,
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(
+                    user?.email,
+                  ),
+                  trailing: GestureDetector(
+                    /*onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (_) => Conversation(
+                            userId: doc.id,
+                            chatId: 'newChat',
+                          ),
+                        ),
+                      );
+                    },*/
+                    // child: Icon(CupertinoIcons.chat_bubble_fill,
+                    //     color: Theme.of(context).accentColor),
+                    child: Container(
+                      height: 30.0,
+                      width: 60.0,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.circular(3.0),
+                        // border:
+                        //     Border.all(color: Theme.of(context).accentColor),
+                      ),
+                      /*child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text('Message',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ),*/
+                    ),
+                  ),
+                ),
+                Divider(),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      return Center(
+        child: circularProgress(context),
+      );
+    }
+  }
+
+  showProfile(BuildContext context, {String profileId}) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (_) => Profile(profileId: profileId),
       ),
-      itemCount: suggestionList.length,
     );
   }
 }
